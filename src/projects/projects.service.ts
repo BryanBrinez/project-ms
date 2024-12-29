@@ -63,8 +63,23 @@ export class ProjectsService extends PrismaClient implements OnModuleInit {
 
 
 
-  findOne(id: string) {
-    return `This action returns a #${id} el otro`;
+  async findOne(id: string) {
+
+    console.log(id)
+
+    try {
+
+      const project = await this.project.findUnique({
+        where: {
+          id: id
+        }
+      });
+
+      return project
+    } catch (error) {
+      throw new RpcException({ message: 'No se ha encontrado el proyecto', status: HttpStatus.BAD_REQUEST });
+    }
+
   }
 
   async findByOwnerEmail(ownerId: string) {
@@ -81,7 +96,7 @@ export class ProjectsService extends PrismaClient implements OnModuleInit {
       console.log('Found projects:', projects);
 
       if (projects.length === 0) {
-        throw new RpcException({ message: `No projects found for user with email ${ownerId}`, status: HttpStatus.BAD_REQUEST });
+        return []
       }
 
       return projects;

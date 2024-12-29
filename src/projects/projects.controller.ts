@@ -32,6 +32,9 @@ export class ProjectsController {
     return this.projectsService.findByOwnerEmail(ownerId);
   }
 
+
+  
+
   @MessagePattern({ cmd: 'update_project' })
   update(@Payload() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(updateProjectDto.id, updateProjectDto);
